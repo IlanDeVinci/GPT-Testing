@@ -1,0 +1,35 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# --- Environnements virtuels (a recreer sur chaque machine) ---
+.venv/
+.venv-gpu/
+venv/
+
+# --- Frontend ---
+frontend/node_modules/
+frontend/dist/
+
+# --- Donnees (trop volumineuses pour Git ; transfert manuel - voir docs/MIGRATION.md) ---
+data/
+!data/.gitkeep
+
+# --- Modeles entrainees : poids (trop volumineux pour Git) ---
+checkpoints/
+checkpoints-*/
+tinybert/mlm*/
+tinybert/classifier*/
+
+# --- Tokenizers entraines (petits mais regenerables ; transferes avec les donnees) ---
+tokenizer/
+tokenizer-*/
+tinybert/tokenizer-*/
+
+# --- Sorties, logs, archives, sauvegardes ---
+outputs/*
+!outputs/.gitkeep
+logs/
+archives/
+backups/
