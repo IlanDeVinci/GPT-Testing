@@ -33,3 +33,8 @@ outputs/*
 logs/
 archives/
 backups/
+
+# --- Paquets de transfert (regenerables via scripts/package_for_demo.ps1) ---
+demo-package/
+demo-package.zip
+transfer/

@@ -54,7 +54,7 @@ PRETRAINED_DIR = (
 
 GPT_TOKENIZER_PATH = (
     PROJECT_ROOT / "tokenizer-v3" / "tokenizer.json"
-    if (_DPO_READY or _SFT_READY or _V3_READY)
+    if (_NARR_READY or _V4_READY or _DPO_READY or _SFT_READY or _V3_READY)
     else PROJECT_ROOT / "tokenizer-trained" / "tokenizer.json"
     if (PROJECT_ROOT / "tokenizer-trained" / "tokenizer.json").exists()
     else PROJECT_ROOT / "tokenizer" / "tokenizer.json"
