@@ -73,9 +73,16 @@ Sur le nouveau PC, copie le contenu de `transfer/` DANS le dossier du repo clon�
 
 ## Étape 3 — Installer l'environnement sur le nouveau PC
 
+> **PRÉREQUIS : Python 3.10 minimum.** Le code utilise la syntaxe `str | None` /
+> `list[...]` (PEP 604, 3.10+). Avec un Python 3.9 ou antérieur tu obtiens
+> `unsupported operand type for |: type and NoneType`. Vérifie avec
+> `python --version` ; sinon installe 3.10+ (python.org) et crée le venv avec
+> `py -3.12 -m venv .venv-gpu` (le launcher `py` choisit la version).
+
 ```powershell
-python -m venv .venv-gpu
+py -3.12 -m venv .venv-gpu      # 3.12, 3.11 ou 3.10 — PAS 3.9
 .\.venv-gpu\Scripts\Activate.ps1
+python --version                # doit afficher 3.10+
 # IMPORTANT : installe torch avec le CUDA de TON GPU (sinon il tourne sur CPU).
 pip install torch --index-url https://download.pytorch.org/whl/cu126
 pip install -r requirements.txt
