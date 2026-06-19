@@ -6,6 +6,7 @@ Lancer depuis la racine du projet :
 """
 
 import random
+import threading
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -39,24 +40,38 @@ _active_lineage = "from-scratch"
 _filler: MaskFiller | None = None
 _retriever: Retriever | None = None
 
+# Verrous de chargement : le frontend déclenche plusieurs requêtes en parallèle
+# (ex. plusieurs /fill d'un coup). Sans verrou, deux threads construisent le même
+# modèle en même temps et le chargement concurrent du checkpoint casse
+# ("Cannot copy out of meta tensor"). On sérialise donc la première construction.
+_generator_lock = threading.Lock()
+_filler_lock = threading.Lock()
+_retriever_lock = threading.Lock()
+
 
 def get_generator() -> GPTStoryGenerator:
     if _active_lineage not in _generators:
-        _generators[_active_lineage] = make_generator(_active_lineage)
+        with _generator_lock:
+            if _active_lineage not in _generators:
+                _generators[_active_lineage] = make_generator(_active_lineage)
     return _generators[_active_lineage]
 
 
 def get_filler() -> MaskFiller:
     global _filler
     if _filler is None:
-        _filler = MaskFiller()
+        with _filler_lock:
+            if _filler is None:
+                _filler = MaskFiller()
     return _filler
 
 
 def get_retriever() -> Retriever:
     global _retriever
     if _retriever is None:
-        _retriever = Retriever()
+        with _retriever_lock:
+            if _retriever is None:
+                _retriever = Retriever()
     return _retriever
 
 

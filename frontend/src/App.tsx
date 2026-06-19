@@ -36,7 +36,9 @@ export default function App() {
         setOpenings(list);
         setOpening((prev) => prev || list[0] || "");
       })
-      .catch(() => setError("API injoignable — lance le backend sur le port 8000."));
+      .catch(() =>
+        setError("API injoignable — lance le backend sur le port 8000."),
+      );
     fetchModels()
       .then((state) => {
         setModels(state.models);
@@ -69,7 +71,7 @@ export default function App() {
     try {
       const result = await generate(
         sameStory && story ? story.opening : opening,
-        nBlanks
+        nBlanks,
       );
       setStory(result);
       setAnswers({});
@@ -98,7 +100,7 @@ export default function App() {
     <div className="app">
       <header className="brand">
         <div>
-          <h1>Histoires Trouées</h1>
+          <h1>Histoires à Trous</h1>
           <p>Le mini-GPT invente, ton mini-BERT souffle les mots.</p>
         </div>
         <div className="badges">
@@ -122,7 +124,11 @@ export default function App() {
             onChange={(event) => changeModel(event.target.value)}
           >
             {models.map((model) => (
-              <option key={model.id} value={model.id} disabled={!model.available}>
+              <option
+                key={model.id}
+                value={model.id}
+                disabled={!model.available}
+              >
                 {model.label}
                 {model.available ? "" : " — non entraîné"}
               </option>
@@ -210,10 +216,18 @@ export default function App() {
                 renderSlot={(i) => {
                   const blank = story.blanks[i];
                   if (answers[blank.index] !== undefined)
-                    return <span className="slot filled">{answers[blank.index]}</span>;
+                    return (
+                      <span className="slot filled">
+                        {answers[blank.index]}
+                      </span>
+                    );
                   if (i === current)
                     return <span className="slot active">?</span>;
-                  return <span className="slot pending">&nbsp;{blank.hint}&nbsp;</span>;
+                  return (
+                    <span className="slot pending">
+                      &nbsp;{blank.hint}&nbsp;
+                    </span>
+                  );
                 }}
               />
               <div className="progress">
@@ -228,8 +242,8 @@ export default function App() {
                         answers[b.index] !== undefined
                           ? "done"
                           : i === current
-                          ? "now"
-                          : ""
+                            ? "now"
+                            : ""
                       }`}
                     />
                   ))}
